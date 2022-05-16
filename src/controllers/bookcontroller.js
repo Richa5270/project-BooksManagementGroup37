@@ -136,7 +136,7 @@ const getBook = async function (req, res) {
     let GetData = await bookModel
       .find({
         $and: [{ isDeleted: false, ...query }],
-      })
+      }).collation({lacale:"en"})
       .sort({ title: 1 })
       .select({
         bookId: 1,
