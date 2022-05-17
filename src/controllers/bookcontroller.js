@@ -150,7 +150,7 @@ const getBook = async function (req, res) {
       });
 
     if (GetData.length == 0) {
-      return res.status(404).send({
+      return res.status(400).send({
         message: "No such document exist with the given attributes.",
       });
     }
@@ -180,7 +180,7 @@ const bookDetail = async function (req, res) {
     console.log(details);
     if (!details) {
       return res
-        .status(404)
+        .status(400)
         .send({ status: false, message: "Detalis is not present" });
     }
     const data2 = await reviewModel
@@ -198,7 +198,7 @@ const bookDetail = async function (req, res) {
       });
     if (!data2) {
       return res
-        .status(404)
+        .status(400)
         .send({ status: false, message: " Data not present" });
     }
     details.reviewsData = data2;
@@ -218,23 +218,23 @@ const updateBook = async function (req, res) {
       const details = req.body;
       if (!bookId) {
         return res
-          .status(404)
+          .status(400)
           .send({ status: false, message: "plz enter a valid BookId" });
       }
       let checktitle = await bookModel.find({ title: details.title });
       if (checktitle.length != 0) {
         return res
-          .status(404)
+          .status(400)
           .send({ status: false, message: "title already exsit" });
       } let checkexcerpt = await bookModel.find({ excerpt: details.excerpt });
       if (checkexcerpt.length != 0) {
         return res
-          .status(404)
+          .status(400)
           .send({ status: false, message: "excerpt already exsit" });
       } let checkISBN = await bookModel.find({ ISBN: details.ISBN });
       if (checkISBN.length != 0) {
         return res
-          .status(404)
+          .status(400)
           .send({ status: false, message: "ISBN already exsit" });
       }
       if (!(/^([a-zA-Z ]+)$/.test(details.title))) {
@@ -252,12 +252,12 @@ const updateBook = async function (req, res) {
       }
       if (!(details.title || details.excerpt || details.ISBN)) {
         return res
-          .status(404)
+          .status(400)
           .send({ status: false, msg: "Plz enter valid keys for updation " });
       }
       if (details.userId || details.category || details.subcategory || details.review) {
         return res
-          .status(404)
+          .status(400)
           .send({ status: false, msg: "you cant't change this attributes" });
       }
       
@@ -294,7 +294,7 @@ const deleteBook = async function (req, res) {
     }
     if (book.isDeleted === true) {
       return res
-        .status(404)
+        .status(400)
         .send({ status: false, message: "Book already deleted" });
     }
     let deleteBooks = await bookModel.findOneAndUpdate(
