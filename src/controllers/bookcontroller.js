@@ -152,7 +152,7 @@ const getBook = async function (req, res) {
       });
 
     if (GetData.length == 0) {
-      return res.status(404).send({
+      return res.status(400).send({
         message: "No such document exist with the given attributes.",
       });
     }
@@ -263,7 +263,7 @@ const updateBook = async function (req, res) {
       let checkISBN = await bookModel.find({ ISBN: details.ISBN });
       if (checkISBN.length != 0) {
         return res
-          .status(404)
+          .status(400)
           .send({ status: false, message: "ISBN already exsit" });
       }
       const updateDetails = await bookModel.findOneAndUpdate(
