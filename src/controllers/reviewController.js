@@ -126,7 +126,7 @@ const deleteReview = async function(req,res){
             { $set: { isDeleted: true , deletedAt: Date()} },
             { new: true }
           );
-        const reviewCount = await bookModel.findByIdAndUpdate({_id:bookId},{$inc:{review:-1}},{new:true})
+        const reviewCount = await bookModel.findByIdAndUpdate({_id:bookId},{$inc:{reviews:-1}},{new:true})
         res.status(200).send({status:true,message:"review successfully deleted",data:deleteRev})
     } catch (err) {
         res.status(500).send({ status: false, data: err.message });
