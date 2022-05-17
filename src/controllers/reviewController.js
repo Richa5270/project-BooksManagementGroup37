@@ -19,9 +19,9 @@ const createReview = async function(req, res){
         if(!bookDetail){
             return res.status(400).send({status:false,message:"plz enter valid Id"})
         }
-        const {review, rating, reviewedby}= details
+        const {reviews, rating, reviewedby}= details
 
-        if(!review){
+        if(!reviews){
             return res.status(400).send({satus:false, message:"plz give a review"})
         }
         
@@ -34,7 +34,7 @@ const createReview = async function(req, res){
         if(!/^([a-zA-Z ]+)$/.test(reviewedby)){
             return res.status(400).send({status:false, message:"Plz give a reviewedby"})
         }
-        if(!/^([a-zA-Z ]+)$/.test(review.trim())){
+        if(!/^([a-zA-Z ]+)$/.test(reviews.trim())){
             return res.status(400).send({status:false, message:"Plz give a valid review"})
         }
         if(rating<1){
@@ -47,7 +47,7 @@ const createReview = async function(req, res){
         details.reviewedAt = new Date()
 
         const newReview = await reviewModel.create(details)
-        const reviewCount = await bookModel.findOneAndUpdate({_id:bookId},{$inc:{review:1}},{new:true})
+        const reviewCount = await bookModel.findOneAndUpdate({_id:bookId},{$inc:{reviews:1}},{new:true})
         res.status(201).send({status:true,message:"succes", data: newReview})
     } catch (err) {
         res.status(500).send({ status: false, data: err.message });
@@ -70,7 +70,7 @@ const updateReview = async function(req, res){
             return res.status(400).send({status:false, message:"Plz enter reviewId"})
         }
         const reviewedData= req.body  
-        const {review, rating, reviewedby}= reviewedData
+        const {reviews, rating, reviewedby}= reviewedData
 
         if(!/^([a-zA-Z ]+)$/.test(reviewedby)){
             return res.status(400).send({status:false, message:"Plz give a reviewedby"})
@@ -82,14 +82,14 @@ const updateReview = async function(req, res){
             return res.status(400).send({status:false, massenge:"plz give a rating mix 5"})
         } 
 
-        const reviews = await reviewModel.findOne({_id:reviewId, isDeleted:false})
-        if(!reviews){
+        const reviewss = await reviewModel.findOne({_id:reviewId, isDeleted:false})
+        if(!reviewss){
             return res.status(400).send({status:false, message:"No such a review"})
         }
         const newReview = await reviewModel.findOneAndUpdate(
             {_id:reviewId },
             {$set:
-                {review:reviewedData.review,
+                {reviews:reviewedData.reviews,
                 rating:reviewedData.rating,
                 reviewedby:reviewedData.reviewedby}
             },{new:true}

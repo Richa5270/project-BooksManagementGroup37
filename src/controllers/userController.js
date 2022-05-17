@@ -73,7 +73,7 @@ const createUser = async function (req, res) {
     if (!/^([a-zA-Z0-9!@#$%^&*_\-+=><]{8,15})$/.test(data.password)) {
       return res
         .status(400)
-        .send({ status: false, message: "Plz enter valid Password, min 8 and mix 15 " });
+        .send({ status: false, message: "Plz enter valid Password, min 8 and mix 16 " });
     }
     
     //validation

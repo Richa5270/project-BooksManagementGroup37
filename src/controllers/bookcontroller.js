@@ -87,7 +87,7 @@ const createBooks = async function (req, res) {
         .status(400)
         .send({ status: false, message: "plz enter valid subcategory" });
     }
-    if (!/^([0-9]|10)$/.test(data.review)) {
+    if (!/^([0-9]|10)$/.test(data.reviews)) {
       return res.status(400).send({
         status: false,
         message: "enter a number,that should be between 0-10 in review" ,
@@ -196,7 +196,7 @@ const bookDetail = async function (req, res) {
         reviewedBy: 1,
         reviewedAt: 1,
         rating: 1,
-        review: 1,
+        reviews: 1,
       });
     if (!data2) {
       return res

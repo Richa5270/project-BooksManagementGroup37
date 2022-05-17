@@ -12,7 +12,7 @@ router.post("/register",userController.createUser)
 router.post("/login",userLogin.userLogin)
 //book api
 router.post("/books",auth.authenti,bookController.createBooks)
-router.get("/getData",auth.authenti,bookController.getBook)
+router.get("/books",auth.authenti,bookController.getBook)
 router.get("/books/:bookId",auth.authenti,bookController.bookDetail)
 router.put("/books/:bookId",auth.authenti,auth.authoriz,bookController.updateBook)
 router.delete("/books/:bookId",auth.authenti,auth.authoriz,bookController.deleteBook)

@@ -4,25 +4,17 @@ const jwt = require("jsonwebtoken");
 const userLogin = async function (req, res) {
   try {
     let userEmail = req.body.email;
-    if(!userEmail){
-      return res.status(400).send({status:false, message:"Email Id is Missing"})
-    }
     let userPassword = req.body.password;
-    if(!userPassword){
-      return res.status(400).send({status:false, message:"Password is Missing"})
+
+    if (!userEmail || userEmail === undefined) {
+      return res.status(400).send({ status: false, msg: "please enter email" });
     }
-    // if (!/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(userEmail.email)) {
-    //   return res
-    //     .status(400)
-    //     .send({ status: false, message: "plz enter valid Email Id" });
-    // }
-    // if (
-    //   !/^([a-zA-Z0-9!@#$%^&*_\-+=><]{8,16})$/.test(userPassword.password)
-    // ) {
-    //   return res
-    //     .status(400)
-    //     .send({ status: false, message: "Plz enter valid Password, min 8, max 15" });
-    // }
+    // Password Validation
+    if (!userPassword || userPassword === undefined) {
+      return res
+        .status(400)
+        .send({ status: false, msg: "please enter password" });
+    }
     let isUser = await userModel.findOne({
       email: userEmail,
       password: userPassword,
@@ -35,8 +27,7 @@ const userLogin = async function (req, res) {
     let token = jwt.sign(
       {
         userId: isUser._id.toString(),
-        // iat:Math.floor(Date.now() / 100),
-        // exp:Math.floor(Date.now() / 1000) + 60 + 60 + 60
+        
       },
       "project-3/group-37" , {expiresIn:'3600s'}
     );
