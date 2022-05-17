@@ -10,7 +10,9 @@ const authentication = async function (req, res, next){
             return res.status(401).send({status:false, data:"Token not present"});
         }
         let decodedToken = jwt.verify(token, "project-3/group-37")
+        
         req.decodedToken = decodedToken; //req is our existing object{previous data , decodedtoken:{payload and issuedat}}
+       // console.log(decodedToken)
         next();
     } catch (err) {
       res.status(401).send({ status: false, message: err.message })

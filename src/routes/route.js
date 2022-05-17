@@ -18,7 +18,7 @@ router.put("/books/:bookId",auth.authenti,auth.authoriz,bookController.updateBoo
 router.delete("/books/:bookId",auth.authenti,auth.authoriz,bookController.deleteBook)
 
 //review
-router.post("/books/:bookId/review",reviewController.createReview)
+router.post("/books/:bookId/reviews",reviewController.createReview)
 router.put("/books/:bookId/reviews/:reviewId",reviewController.updateReview)
 router.delete("/books/:bookId/reviews/:reviewId",reviewController.deleteReview)
 

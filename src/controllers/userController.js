@@ -17,34 +17,42 @@ const createUser = async function (req, res) {
     if (!data.name) {
       return res
         .status(400)
-        .send({ status: false, message: "Name is required" });
+        .send({ status: false, message: "Name is Missing" });
     }
     if (!data.phone) {
       return res
         .status(400)
-        .send({ status: false, message: "phone No. is required" });
+        .send({ status: false, message: "Phone No. is Missing" });
     }
     if (!data.email) {
       return res
         .status(400)
-        .send({ status: false, message: "EmailId is required" });
+        .send({ status: false, message: "Email Id is Missing" });
     }
     if (!data.password) {
       return res
         .status(400)
-        .send({ status: false, message: "password is required" });
+        .send({ status: false, message: "Password is Missing" });
     }
     let address = data.address;
-    if (!address) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Address is required" });
+    if (address) {
+      if (!/^([a-zA-Z0-9#, ]+)$/.test(address.street)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "plz enter valid street" });
+      }
+      if (!/^([a-zA-Z]+)$/.test(address.city)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "plz enter valid city" });
+      }
+      if (!/^([0-9]{6})$/.test(address.pincode)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "plz enter valid pincode" });
+      }
     }
-    if (Object.keys(address).length < 3) {
-      return res
-        .status(400)
-        .send({ status: false, message: "address is required" });
-    }
+   
     //console.log(data.name)
     //regex Syntex
     if (!/^([a-zA-Z ]+)$/.test(data.name)) {
@@ -62,39 +70,23 @@ const createUser = async function (req, res) {
         .status(400)
         .send({ status: false, message: "plz enter a valid Email" });
     }
-    if (!/^([a-zA-Z0-9!@#$%^&*_\-+=><]{8,15})$/.test(data.password.trim())) {
+    if (!/^([a-zA-Z0-9!@#$%^&*_\-+=><]{8,15})$/.test(data.password)) {
       return res
         .status(400)
-        .send({ status: false, message: "Plz enter valid Password" });
+        .send({ status: false, message: "Plz enter valid Password, min 8 and mix 15 " });
     }
-    if (!/^([a-zA-Z0-9#, ]+)$/.test(address.street)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "plz enter valid street" });
-    }
-    if (!/^([a-zA-Z]+)$/.test(address.city)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "plz enter valid city" });
-    }
-    if (!/^([0-9]{6})$/.test(address.pincode)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "plz enter valid pincode" });
-    }
+    
     //validation
-    let checkphone = await userModel.find({ phone: data.phone });
-    if (checkphone.length != 0) {
-      return res
-        .status(404)
-        .send({ status: false, message: "phone no already exsit" });
+    let checkUniqueData = await userModel.findOne({$or:[{phone: data.phone}, {email: data.email}]  });
+    if (checkUniqueData) {
+      if(checkUniqueData.phone == data.phone){
+        return res.status(400).send({status:false, message: "Phone No.already exists"})
+      }
+      if(checkUniqueData.email == data.email){
+        return res.status(400).send({status:false, message:"Email Id already exists"})
+      }
     }
-    let checkIfemailExist = await userModel.find({ email: data.email });
-    if (checkIfemailExist.length != 0) {
-      return res
-        .status(404)
-        .send({ status: false, message: "EmailID already exist" });
-    }
+   
     
     let saved = await userModel.create(data);
     res.status(201).send({ status: true, message: "Success", data: saved });
