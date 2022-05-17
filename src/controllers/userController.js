@@ -86,13 +86,13 @@ const createUser = async function (req, res) {
     let checkphone = await userModel.find({ phone: data.phone });
     if (checkphone.length != 0) {
       return res
-        .status(404)
+        .status(400)
         .send({ status: false, message: "phone no already exsit" });
     }
     let checkIfemailExist = await userModel.find({ email: data.email });
     if (checkIfemailExist.length != 0) {
       return res
-        .status(404)
+        .status(400)
         .send({ status: false, message: "EmailID already exist" });
     }
     
